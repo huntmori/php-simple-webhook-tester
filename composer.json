@@ -1,0 +1,7 @@
+{
+    "require": {
+        "mikecao/flight": "^2.0",
+        "azurre/php-simple-logger": "^1.1",
+        "monolog/monolog": "^2.7"
+    }
+}
