@@ -1,2 +1,5 @@
 logs/*.log
 vendor/*
+scheme/*
+goorm.manifest
+.vscode
