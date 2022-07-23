@@ -41,19 +41,19 @@
 
 		function chatWebhookCallBack(): void {
 			$request = Flight::request();
-			$base_response = array("ResultCode"=>0, "DebugMessage"=>"OK");
-			Flight::json($base_response);
+			$baseResponse = array("ResultCode"=>0, "DebugMessage"=>"OK");
+			Flight::json($baseResponse);
 
-			$this->loggingMethod($request, $base_response);
+			$this->loggingMethod($request, $baseResponse);
 			$this->schemeMethod($request);
 		}
 
 		function punWebhookCallBack(): void {
 			$request = Flight::request();      
-			$base_response = array("ResultCode"=>0, "ErrorCode"=>0);        
-			Flight::json($base_response);
+			$baseResponse = array("ResultCode"=>0, "ErrorCode"=>0);        
+			Flight::json($baseResponse);
 
-			$this->loggingMethod($request, $base_response);
+			$this->loggingMethod($request, $baseResponse);
 			$this->schemeMethod($request);
 		}
 	}
