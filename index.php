@@ -1,38 +1,59 @@
-<?php 
-require_once __DIR__."/vendor/autoload.php";
+<?php
+    // error_reporting(E_ALL);
+    // ini_set('display_errors', '1');
+    require_once __DIR__."/vendor/autoload.php";
 
-use Monolog\Level;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-$base_url = "/api/v1/chat/channel";
+    use Monolog\Handler\StreamHandler;
+    use Monolog\Logger;
+    $base_url = "/api/v1/chat";
+    $pun_webhook = "/api/v1/pun/room";
 
-$baseFunction = function() {
-    $request = Flight::request();
-    $logger = new Logger('logger');
-    $logger->pushHandler(new StreamHandler('./logs/'.date('Ymd').'.log'));
-    $base_url = "/api/v1/chat/channel";
-    $logger->info("[".$request->url."]");
-    $logger->info("request-query=========================================================================");
-    $logger->info(json_encode($request->query));
-    $logger->info("request-body==========================================================================");
-    $logger->info(json_encode($request->data));
+    $loggingMethod = function($requestObject, $responseObject) {
+        $logger = new Logger('logger');
+        $logger->pushHandler(new StreamHandler('./logs/'.date('Ymd').'.log'));
+        $logger->info("[".$requestObject->url."]");
+        $logger->info("request-query=========================================================================");
+        $logger->info(json_encode($requestObject->query));
+        $logger->info("request-body==========================================================================");
+        $logger->info(json_encode($requestObject->data));
+        $logger->info("response==============================================================================");
+        $logger->info(json_encode($responseObject));
+        $logger->info("======================================================================================");
+    };
     
-    $base_response = array("ResultCode"=>0, "DebugMessage"=>"OK", "Request"=>(array)($request));
-    $logger->info("response==============================================================================");
-    $logger->info(json_encode($base_response));
-    $logger->info("======================================================================================");
-    Flight::json($base_response);
-};
+    $schemeMethod = function($requestObject) {
+        $fileName = str_replace('/', '.', $requestObject->url);
+        $schemeFileExsist = file_exists("./scheme/$fileName.json");
+        
+        if (!$schemeFileExsist) {
+            $output = fopen("./scheme/$fileName.json", "a");
+            fwrite($output, json_encode($requestObject->data));
+            fclose($output);
+        }
+    };
 
-Flight::route("POST $base_url/create", $baseFunction);
+    $chatWebhookCallBack = function($loggingMethod, $schemeMethod) {
+        $request = Flight::request();
+        $base_response = array("ResultCode"=>0, "DebugMessage"=>"OK");
+        Flight::json($base_response);
 
-Flight::route("POST $base_url/destroy", $baseFunction);
+        $loggingMethod($request, $base_response);
+        $schemeMethod($request);
+    };
 
-Flight::route("POST $base_url/subscribe", $baseFunction);
+    $punWebhookCallBack = function($loggingMethod, $schemeMethod) {
+        $request = Flight::request();      
+        $base_response = array("ResultCode"=>0, "ErrorCode"=>0);        
+        Flight::json($base_response);
+        
+        $loggingMethod($request, $base_response);
+        $schemeMethod($request);
+    };
+    Flight::route("POST /api/v1/chat/*",        $chatWebhookCallBack($loggingMethod, $schemeMethod));
+    Flight::route("POST /api/v1/pun/room/*",    $punWebhookCallBack($loggingMethod, $schemeMethod));
 
-Flight::route("POST $base_url/unsubscribe", $baseFunction);
+    Flight::route('*', function(){
+        Flight::json(array("bye"=>"guys"));
+    });
 
-Flight::route("POST $base_url/publish-message", $baseFunction);
-
-
-Flight::start();
+    Flight::start();

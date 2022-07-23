@@ -46,6 +46,9 @@
                 "logging",
                 "psr-3"
             ],
+            "support": {
+                "source": "https://github.com/azurre/php-simple-logger/tree/v1.0.3"
+            },
             "time": "2021-06-23T18:51:59+00:00"
         },
         {
@@ -90,6 +93,10 @@
             ],
             "description": "Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications.",
             "homepage": "http://flightphp.com",
+            "support": {
+                "issues": "https://github.com/mikecao/flight/issues",
+                "source": "https://github.com/mikecao/flight/tree/v2.0.1"
+            },
             "time": "2021-12-19T03:03:01+00:00"
         },
         {
@@ -180,6 +187,10 @@
                 "logging",
                 "psr-3"
             ],
+            "support": {
+                "issues": "https://github.com/Seldaek/monolog/issues",
+                "source": "https://github.com/Seldaek/monolog/tree/2.7.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/Seldaek",
@@ -237,6 +248,9 @@
                 "psr",
                 "psr-3"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.4"
+            },
             "time": "2021-05-03T11:20:27+00:00"
         }
     ],
@@ -248,5 +262,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.3.0"
 }
