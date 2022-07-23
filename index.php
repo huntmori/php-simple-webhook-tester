@@ -1,13 +1,13 @@
 <?php
-    // error_reporting(E_ALL);
-    // ini_set('display_errors', '1');
     require_once __DIR__."/vendor/autoload.php";
 
     use Monolog\Handler\StreamHandler;
     use Monolog\Logger;
+	use flight\net\Request;
+	use flight\net\Response;
 
     class Controller {
-		function loggingMethod($requestObject, $responseObject) {
+		function loggingMethod(Request $requestObject, array $responseObject): void {
 			if (is_dir('./logs') === false ) {
 				mkdir('./logs', 0755, false);
 			}
@@ -24,7 +24,7 @@
 			$logger->info("======================================================================================");
 		}
 
-		 function schemeMethod($requestObject) {
+		function schemeMethod(Request $requestObject): void {
 			if (is_dir('./scheme') === false ) {
 				mkdir('./scheme', 0755, false);
 			}
@@ -39,7 +39,7 @@
 			}
 		}
 
-		function chatWebhookCallBack() {
+		function chatWebhookCallBack(): void {
 			$request = Flight::request();
 			$base_response = array("ResultCode"=>0, "DebugMessage"=>"OK");
 			Flight::json($base_response);
@@ -48,7 +48,7 @@
 			$this->schemeMethod($request);
 		}
 
-		function punWebhookCallBack() {
+		function punWebhookCallBack(): void {
 			$request = Flight::request();      
 			$base_response = array("ResultCode"=>0, "ErrorCode"=>0);        
 			Flight::json($base_response);
