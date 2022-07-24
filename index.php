@@ -7,10 +7,15 @@
 	use flight\net\Response;
 
     class Controller {
-		function loggingMethod(Request $requestObject, array $responseObject): void {
-			if (is_dir('./logs') === false ) {
-				mkdir('./logs', 0755, false);
+		function makeDirectoryIfNotExist(string $path):void {
+			if (is_dir($path) === false ) {
+				mkdir($path, 0755, false);
 			}
+		}
+
+		function loggingMethod(Request $requestObject, array $responseObject): void {
+			
+			$this->makeDirectoryIfNotExist('./logs');
 
 			$logger = new Logger('logger');
 			$logger->pushHandler(new StreamHandler('./logs/'.date('Ymd').'.log'));
@@ -25,9 +30,7 @@
 		}
 
 		function schemeMethod(Request $requestObject): void {
-			if (is_dir('./scheme') === false ) {
-				mkdir('./scheme', 0755, false);
-			}
+			$this->makeDirectoryIfNotExist('./scheme');
 
 			$fileName = str_replace('/', '.', $requestObject->url);
 			$schemeFileExsist = file_exists("./scheme/$fileName.json");
