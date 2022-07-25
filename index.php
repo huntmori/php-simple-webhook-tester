@@ -36,7 +36,7 @@
 			$schemeFileExsist = file_exists("./scheme/$fileName.json");
 
 			if (!$schemeFileExsist) {
-				$output = fopen("./scheme/$fileName.json", "a");
+				$output = fopen("./scheme/$fileName.json", "w+");
 				fwrite($output, json_encode($requestObject->data));
 				fclose($output);
 			}
