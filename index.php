@@ -45,6 +45,9 @@
 		function chatWebhookCallBack(): void {
 			$request = Flight::request();
 			$baseResponse = array("ResultCode"=>0, "DebugMessage"=>"OK");
+			if ($reuqest->url === "/api/v1/chat/publish-message") {
+				$baseResponse["data"] = $request->data->Message;
+			}
 			Flight::json($baseResponse);
 
 			$this->loggingMethod($request, $baseResponse);
