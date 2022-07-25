@@ -19,3 +19,9 @@ use apache2
 ```cmd
 tail -f logs/20yyMMdd.log
 ```
+
+serve 파일로 서버가 구동 안된다면,
+먼저 serve 파일의 실행권한이 있는지 확인을 해보시기 바랍니다.
+```cmd
+ls -la | grep serve
+```
