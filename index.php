@@ -62,11 +62,24 @@
 			$this->loggingMethod($request, $baseResponse);
 			$this->schemeMethod($request);
 		}
+
+		function authTest(): void {
+			$request = Flight::request();
+
+			$response = array("ResultCode"=>1, "UserId"=>1, "Request"=>$request);
+			Flight::json($response);
+			$this->loggingMethod($request, $response);
+			$this->schemeMethod($request);
+		}
 	}
 
     $controller = new Controller();
+	Flight::route("POST /api/v1/chat/user",     array($controller, 'authTest'));
     Flight::route("POST /api/v1/chat/*",        array($controller, 'chatWebhookCallBack'));
     Flight::route("POST /api/v1/pun/room/*",    array($controller, 'punWebhookCallBack'));
+	Flight::route("POST /api/v1/user", function() {
+		
+	});
 
     Flight::route('*', function(){
         Flight::json(array("bye"=>"guys"));
